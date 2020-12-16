@@ -17,13 +17,10 @@ export default function itemModel(sequelize, DataTypes) {
       allowNull: false,
       type: DataTypes.DATE,
     },
-    categoryId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'Categories',
-        key: 'id'
-      },
-    },
+    // There is no need to specify the CategoryId foreign key in our model
+    // because we do not need to access the foreign key from our application.
+    // Sequelize uses the foreign key under the hood to get associated records.
+    // Sequelize by default looks for a foreign key called CategoryId because of
+    // belongsTo and hasMany associations defined in models/index.mjs.
   });
 }

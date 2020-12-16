@@ -7,15 +7,28 @@ db.Category
     }
   })
   .then((returnedCategory) => {
+    // Docs on .create
+    // https://sequelize.org/master/class/lib/model.js~Model.html#static-method-create
+    // Return statement returns the Promise returned by the final .then
     return db.Item.create(
       {
         name: process.argv[3],
-        categoryId: returnedCategory.id
       },
       {
+        // Return only the id column
         returning: ['id']
       }
-    )
+    ).then((newItem) => {
+      // Associate newItem with returnedCategory using the setCategory
+      // method on newItem that Sequelize provides for us because of the
+      // belongsTo association we defined in models/index.mjs.
+      // This logic because less clunky after we introduce async/await syntax.
+      // Docs: https://sequelize.org/master/manual/assocs.html#-code-foo-belongsto-bar---code-
+      return newItem.setCategory(returnedCategory).then(() => {
+        return newItem;
+      });
+    });
+    
   }).then(result => {
 
     console.log('success!!');

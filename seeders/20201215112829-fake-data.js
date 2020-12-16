@@ -21,6 +21,7 @@ module.exports = {
       }
     ];
 
+    // Insert categories before items because items reference categories 
     let categories = await queryInterface.bulkInsert("Categories", categoriesList, { returning: true });
 
     const items = [];
@@ -30,21 +31,21 @@ module.exports = {
 
       items.push({
         name: 'some item',
-        categoryId:category.id,
+        CategoryId:category.id,
         createdAt: new Date(),
         updatedAt: new Date(),
       });
 
       items.push({
         name: 'other item',
-        categoryId:category.id,
+        CategoryId:category.id,
         createdAt: new Date(),
         updatedAt: new Date()
       });
 
       items.push({
         name: 'iitemmm',
-        categoryId:category.id,
+        CategoryId:category.id,
         createdAt: new Date(),
         updatedAt: new Date()
       });
