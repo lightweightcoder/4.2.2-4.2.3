@@ -16,8 +16,8 @@ let sequelize = new Sequelize(config.database, config.username, config.password,
 db.Item = itemModel(sequelize, Sequelize.DataTypes);
 db.Category = categoryModel(sequelize, Sequelize.DataTypes);
 
-db.Item.Category = db.Item.belongsTo(db.Category, {as:'category'});
-db.Category.Items = db.Category.hasMany(db.Item, {foreignKey: 'categoryId'});
+db.Item.belongsTo(db.Category);
+db.Category.hasMany(db.Item);
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

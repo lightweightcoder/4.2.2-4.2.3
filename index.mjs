@@ -14,16 +14,17 @@ db.Category
       {
         name: process.argv[3],
       },
-      {
-        // Return only the id column
-        returning: ['id']
-      }
+      // {
+      //   // Return only the id column
+      //   returning: ['id']
+      // }
     ).then((newItem) => {
       // Associate newItem with returnedCategory using the setCategory
       // method on newItem that Sequelize provides for us because of the
       // belongsTo association we defined in models/index.mjs.
       // This logic because less clunky after we introduce async/await syntax.
       // Docs: https://sequelize.org/master/manual/assocs.html#-code-foo-belongsto-bar---code-
+      console.log('new item is ', newItem);
       return newItem.setCategory(returnedCategory).then(() => {
         return newItem;
       });
@@ -32,7 +33,7 @@ db.Category
   }).then(result => {
 
     console.log('success!!');
-    console.log(result.id);
+    console.log(result);
 
   }).catch(error => {
 
