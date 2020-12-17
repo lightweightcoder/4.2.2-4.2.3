@@ -1,61 +1,29 @@
-'use strict';
-
 module.exports = {
   up: async (queryInterface) => {
 
-    const categoriesList = [
+    const itemsList = [
       {
-        name: 'fish',
+        name: 'doritos',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        name: 'fruits',
+        name: 'mangoes',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        name: 'meat',
+        name: 'pork shoulder',
         createdAt: new Date(),
         updatedAt: new Date()
       }
     ];
 
-    // Insert categories before items because items reference categories 
-    let categories = await queryInterface.bulkInsert("Categories", categoriesList, { returning: true });
+    queryInterface.bulkInsert("Items", itemsList);
 
-    const items = [];
-    for( let i=0;i<categories.length; i++){
-
-      const category = categories[i];
-
-      items.push({
-        name: 'some item',
-        CategoryId:category.id,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
-
-      items.push({
-        name: 'other item',
-        CategoryId:category.id,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      });
-
-      items.push({
-        name: 'iitemmm',
-        CategoryId:category.id,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      });
-    }
-
-    queryInterface.bulkInsert("Items", items);
   },
 
   down: async (queryInterface) => {
     await queryInterface.bulkDelete("Items", null, {});
-    await queryInterface.bulkDelete("Categories", null, {});
   },
 };

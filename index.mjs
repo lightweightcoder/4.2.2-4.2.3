@@ -1,39 +1,24 @@
-import db from './models/index.mjs';
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import methodOverride from 'method-override';
 
-// // get items in a category
-// const getData = async () => {
-//   try {
-//     const category = await db.Category.findOne({
-//       where: {
-//         name: [process.argv[2]],
-//       },
-//     });
+import routes from './routes.mjs';
 
-//     const categoryItems = await category.getItems();
+const app = express();
 
-//     console.log(categoryItems);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+app.use(cookieParser());
 
-// getData();
+app.set('view engine', 'ejs');
 
-// get category of an item
-const getData = async () => {
-  try {
-    const item = await db.Item.findOne({
-      where: {
-        name: [process.argv[2]],
-      },
-    });
+app.use(express.urlencoded({ extended: false }));
 
-    const itemCategory = await item.getCategory();
+app.use(express.static('public'));
 
-    console.log(itemCategory);
-  } catch (error) {
-    console.log(error);
-  }
-};
+app.use(methodOverride('_method'));
 
-getData();
+// set the routes
+routes( app );
+
+const PORT = process.env.PORT || 3004;
+
+app.listen(PORT);
