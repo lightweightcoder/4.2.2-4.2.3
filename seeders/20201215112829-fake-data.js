@@ -19,7 +19,7 @@ module.exports = {
       }
     ];
 
-    queryInterface.bulkInsert("Items", itemsList);
+    await queryInterface.bulkInsert("Items", itemsList);
 
   },
 
