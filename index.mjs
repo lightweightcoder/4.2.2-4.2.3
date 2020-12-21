@@ -1,24 +1,31 @@
-import express from 'express';
-import cookieParser from 'cookie-parser';
-import methodOverride from 'method-override';
+import db from './models/index.mjs';
 
-import routes from './routes.mjs';
+// for finding items of 1 category
+// db.Category.findOne({
+//   where: {
+//     name: [process.argv[2]],
+//   },
+// })
+//   .then((category) => category.getItems())
+//   .then((categoryItems) => {
+//     categoryItems.forEach((categoryItem) => {
+//       console.log(categoryItem.dataValues.name);
+//     });
+//   })
+//   .catch((error) => console.log(error));
 
-const app = express();
+// ----------------------------------------------------------------------
 
-app.use(cookieParser());
-
-app.set('view engine', 'ejs');
-
-app.use(express.urlencoded({ extended: false }));
-
-app.use(express.static('public'));
-
-app.use(methodOverride('_method'));
-
-// set the routes
-routes( app );
-
-const PORT = process.env.PORT || 3004;
-
-app.listen(PORT);
+// for finding categories of 1 item
+db.Item.findOne({
+  where: {
+    name: [process.argv[2]],
+  },
+})
+  .then((item) => item.getCategories())
+  .then((itemCategories) => {
+    itemCategories.forEach((itemCategory) => {
+      console.log(itemCategory.dataValues.name);
+    });
+  })
+  .catch((error) => console.log(error));
