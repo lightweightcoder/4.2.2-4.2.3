@@ -40,6 +40,8 @@ module.exports = {
       { returning: true },
     );
 
+    const items = [];
+
     const banana = await queryInterface.bulkInsert('Items',
       [{
         name: 'banana',
@@ -63,8 +65,6 @@ module.exports = {
       { returning: true });
 
     const itemCategory = [];
-
-    console.log(banana);
 
     // banana is a fruit
     itemCategory.push({
@@ -114,11 +114,41 @@ module.exports = {
       CategoryId: cannedCategory[0].id,
     });
 
-    queryInterface.bulkInsert('ItemsCategories', itemCategory);
+    await queryInterface.bulkInsert('ItemsCategories', itemCategory);
+
+    // create a single cart
+    const carts = [
+      {
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ];
+
+    const cart = await queryInterface.bulkInsert('Carts', carts);
+
+    const cartsItems = [];
+
+    // put items in the cart
+    cartsItems.push({
+      ItemId: peach[0].id,
+      quantity: 1,
+      CartId: 1,
+    });
+
+    cartsItems.push({
+      ItemId: peach[0].id,
+      quantity: 4,
+      CartId: 1,
+    });
+
+    await queryInterface.bulkInsert('CartsItems', cartsItems);
   },
 
   down: async (queryInterface) => {
+    await queryInterface.bulkDelete('ItemsCategories', null, {});
+    await queryInterface.bulkDelete('CartsItems', null, {});
     await queryInterface.bulkDelete('Items', null, {});
     await queryInterface.bulkDelete('Categories', null, {});
+    await queryInterface.bulkDelete('Carts', null, {});
   },
 };
