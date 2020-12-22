@@ -10,19 +10,19 @@ const config = allConfig[env];
 
 const db = {};
 
-let sequelize = new Sequelize(
+const sequelize = new Sequelize(
   config.database,
   config.username,
   config.password,
-  config
+  config,
 );
 
 db.Item = itemModel(sequelize, Sequelize.DataTypes);
 db.Category = categoryModel(sequelize, Sequelize.DataTypes);
 
 // in order for the many-to-many to work we must mention the join table here.
-db.Item.belongsToMany(db.Category,  { through: 'ItemsCategories' });
-db.Category.belongsToMany(db.Item,  { through: 'ItemsCategories' });
+db.Item.belongsToMany(db.Category, { through: 'ItemsCategories' });
+db.Category.belongsToMany(db.Item, { through: 'ItemsCategories' });
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
