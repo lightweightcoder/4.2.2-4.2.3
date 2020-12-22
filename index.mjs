@@ -14,10 +14,10 @@ db.Category
       {
         name: process.argv[3],
       },
-      // {
-      //   // Return only the id column
-      //   returning: ['id']
-      // }
+      {
+        // Return only the id column
+        returning: ['id']
+      }
     ).then((newItem) => {
       // Associate newItem with returnedCategory using the setCategory
       // method on newItem that Sequelize provides for us because of the
@@ -33,7 +33,7 @@ db.Category
   }).then(result => {
 
     console.log('success!!');
-    console.log(result);
+    console.log('result is', result.name);
 
   }).catch(error => {
 
