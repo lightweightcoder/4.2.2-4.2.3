@@ -1,6 +1,7 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    // Categories needs to be created first because Items references Categories
+    // Categories and Items need to be created
+    // first because ItemsCategories references Categories and Items
     await queryInterface.createTable('Categories', {
       id: {
         allowNull: false,
@@ -75,7 +76,7 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    // Items table needs to be dropped first because Items references Categories
+    // ItemsCategories table needs to be dropped first because Items references Categories
     await queryInterface.dropTable('ItemsCategories');
     await queryInterface.dropTable('Items');
     await queryInterface.dropTable('Categories');
