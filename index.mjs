@@ -24,7 +24,7 @@ db.Category
       // belongsTo association we defined in models/index.mjs.
       // This logic because less clunky after we introduce async/await syntax.
       // Docs: https://sequelize.org/master/manual/assocs.html#-code-foo-belongsto-bar---code-
-      console.log('new item is ', newItem);
+      console.log('new item is ', newItem.name);
       return newItem.setCategory(returnedCategory).then(() => {
         return newItem;
       });
