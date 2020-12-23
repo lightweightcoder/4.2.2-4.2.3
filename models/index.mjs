@@ -35,6 +35,13 @@ db.Category.belongsToMany(db.Item, { through: 'ItemsCategories' });
 db.Item.belongsToMany(db.Cart, { through: db.CartsItem });
 db.Cart.belongsToMany(db.Item, { through: db.CartsItem });
 
+// Define 1-M associations between CartsItems table and associated tables
+// to access CartsItem attributes from Item and Cart instances
+db.Item.hasMany(db.CartsItem);
+db.CartsItem.belongsTo(db.Item);
+db.Cart.hasMany(db.CartsItem);
+db.CartsItem.belongsTo(db.Cart);
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

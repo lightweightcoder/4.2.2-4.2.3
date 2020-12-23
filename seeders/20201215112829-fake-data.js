@@ -1,150 +1,161 @@
 module.exports = {
   up: async (queryInterface) => {
-    const fishCategory = await queryInterface.bulkInsert(
-      'Categories',
-      [{
+    // Define category data
+    const categoryData = [
+      {
         name: 'fish',
         createdAt: new Date(),
         updatedAt: new Date(),
-      }],
-      { returning: true },
-    );
-
-    const fruitCategory = await queryInterface.bulkInsert(
-      'Categories',
-      [{
+      },
+      {
         name: 'fruit',
         createdAt: new Date(),
         updatedAt: new Date(),
-      }],
-      { returning: true },
-    );
-
-    const healthyCategory = await queryInterface.bulkInsert(
-      'Categories',
-      [{
+      },
+      {
         name: 'healthy',
         createdAt: new Date(),
         updatedAt: new Date(),
-      }],
-      { returning: true },
-    );
-
-    const cannedCategory = await queryInterface.bulkInsert(
-      'Categories',
-      [{
+      },
+      {
         name: 'canned',
         createdAt: new Date(),
         updatedAt: new Date(),
-      }],
-      { returning: true },
-    );
+      },
+    ];
 
-    const items = [];
+    // Bulk insert categories
+    const [
+      fishCategory,
+      fruitCategory,
+      healthyCategory,
+      cannedCategory,
+    ] = await queryInterface.bulkInsert('Categories', categoryData, {
+      returning: true,
+    });
 
-    const banana = await queryInterface.bulkInsert('Items',
-      [{
+    // Define item data
+    const itemData = [
+      {
         name: 'banana',
         createdAt: new Date(),
         updatedAt: new Date(),
-      }],
-      { returning: true });
-    const tuna = await queryInterface.bulkInsert('Items',
-      [{
+      },
+      {
         name: 'tuna',
         createdAt: new Date(),
         updatedAt: new Date(),
-      }],
-      { returning: true });
-    const peach = await queryInterface.bulkInsert('Items',
-      [{
+      },
+      {
         name: 'peach',
         createdAt: new Date(),
         updatedAt: new Date(),
-      }],
-      { returning: true });
+      },
+    ];
 
-    const itemCategory = [];
+    // Bulk insert items
+    const [banana, tuna, peach] = await queryInterface.bulkInsert(
+      'Items',
+      itemData,
+      { returning: true },
+    );
 
-    // banana is a fruit
-    itemCategory.push({
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      ItemId: banana[0].id,
-      CategoryId: fruitCategory[0].id,
-    });
+    // Define item category data based on generated items and categories
+    const itemCategoryData = [
+      // banana is a fruit
+      {
+        ItemId: banana.id,
+        CategoryId: fruitCategory.id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      // banana is healthy
+      {
+        ItemId: banana.id,
+        CategoryId: healthyCategory.id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      // tuna is fish
+      {
+        ItemId: tuna.id,
+        CategoryId: fishCategory.id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      // tuna is canned
+      {
+        ItemId: tuna.id,
+        CategoryId: cannedCategory.id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      // peach is fruit
+      {
+        ItemId: peach.id,
+        CategoryId: fruitCategory.id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      // peach is canned
+      {
+        ItemId: peach.id,
+        CategoryId: cannedCategory.id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ];
 
-    // banana is healthy
-    itemCategory.push({
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      ItemId: banana[0].id,
-      CategoryId: healthyCategory[0].id,
-    });
+    // Bulk insert item categories
+    await queryInterface.bulkInsert('ItemsCategories', itemCategoryData);
 
-    // tuna is fish
-    itemCategory.push({
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      ItemId: tuna[0].id,
-      CategoryId: fishCategory[0].id,
-    });
-
-    // tuna is canned
-    itemCategory.push({
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      ItemId: tuna[0].id,
-      CategoryId: cannedCategory[0].id,
-    });
-
-    // peach is fruit
-    itemCategory.push({
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      ItemId: peach[0].id,
-      CategoryId: fruitCategory[0].id,
-    });
-
-    // peach is canned
-    itemCategory.push({
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      ItemId: peach[0].id,
-      CategoryId: cannedCategory[0].id,
-    });
-
-    await queryInterface.bulkInsert('ItemsCategories', itemCategory);
-
-    // create a single cart
-    const carts = [
+    // Define cart data, 2 carts
+    const cartData = [
+      {
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
       {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
     ];
 
-    const cart = await queryInterface.bulkInsert('Carts', carts);
-
-    const cartsItems = [];
-
-    // put items in the cart
-    cartsItems.push({
-      ItemId: peach[0].id,
-      quantity: 1,
-      CartId: 1,
+    // Bulk insert carts
+    const [cart1, cart2] = await queryInterface.bulkInsert('Carts', cartData, {
+      returning: true,
     });
 
-    cartsItems.push({
-      ItemId: peach[0].id,
-      quantity: 4,
-      CartId: 1,
-    });
+    // Define cart item data, i.e. put items in cart
+    const cartsItemData = [
+      {
+        quantity: 1,
+        ItemId: peach.id,
+        CartId: cart1.id,
+      },
+      {
+        quantity: 3,
+        ItemId: peach.id,
+        CartId: cart1.id,
+      },
+      {
+        quantity: 2,
+        ItemId: banana.id,
+        CartId: cart1.id,
+      },
+      {
+        quantity: 4,
+        ItemId: peach.id,
+        CartId: cart2.id,
+      },
+    ];
 
-    await queryInterface.bulkInsert('CartsItems', cartsItems);
+    // Bulk insert cart items
+    await queryInterface.bulkInsert('CartsItems', cartsItemData);
   },
 
   down: async (queryInterface) => {
+    // Delete rows from tables with foreign key references first
     await queryInterface.bulkDelete('ItemsCategories', null, {});
     await queryInterface.bulkDelete('CartsItems', null, {});
     await queryInterface.bulkDelete('Items', null, {});

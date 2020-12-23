@@ -118,10 +118,15 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('ItemsCategories');
-    await queryInterface.dropTable('CartsItems');
-    await queryInterface.dropTable('Items');
-    await queryInterface.dropTable('Categories');
-    await queryInterface.dropTable('Carts');
+    // Drop tables with foreign key references first
+    await Promise.all([
+      queryInterface.dropTable('ItemsCategories'),
+      queryInterface.dropTable('CartsItems'),
+    ]);
+    await Promise.all([
+      queryInterface.dropTable('Items'),
+      queryInterface.dropTable('Categories'),
+      queryInterface.dropTable('Carts'),
+    ]);
   },
 };
